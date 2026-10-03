@@ -23,15 +23,12 @@ Build output goes to `~/.platformio/workspaces/station` (kept out of iCloud-sync
 | Button | GPIO | Mask bit |
 |--------|------|----------|
 | Red    | 15   | 0x01 |
-| Green  | 35 ¹ | 0x02 |
+| Green  | 32   | 0x02 |
 | Blue   | 4    | 0x04 |
 | Yellow | 12   | 0x08 |
 | White  | 14   | 0x10 |
 
 Each button: GPIO ↔ GND, internal pull-up (pressed = LOW).
-
-¹ GPIO 35 is input-only and has **no internal pull-up**: add a 10 kΩ resistor from
-GPIO 35 to 3.3 V, otherwise the green input floats and sends phantom presses.
 
 LED strip (WS2812B): data → **GPIO 2**, plus 5 V and GND (share GND with the ESP32).
 GPIO 34–39 are input-only on the ESP32 and cannot drive a strip. Set the strip

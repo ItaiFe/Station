@@ -19,7 +19,7 @@ changes.
 | Button | GPIO | Mask bit |
 |--------|------|----------|
 | Red    | 15   | 0 (0x01) |
-| Green  | 35 (external 10k pull-up to 3.3 V) | 1 (0x02) |
+| Green  | 32   | 1 (0x02) |
 | Blue   | 4    | 2 (0x04) |
 | Yellow | 12   | 3 (0x08) |
 | White  | 14   | 4 (0x10) |
@@ -92,8 +92,7 @@ The effective mask sent = physical mask OR simulated mask (while a web hold is a
 
 ## LED strip (added 2026-10-03)
 
-- WS2812B strip, data on **GPIO 2** (pins ran out; green button moved from 2 to 35,
-  which is input-only without an internal pull-up, so it needs an external 10k to 3.3 V). `LED_COUNT` in `config.h` (default 30 until the real count is known),
+- WS2812B strip, data on **GPIO 2** (pins ran out; green button moved from 2 to 32). `LED_COUNT` in `config.h` (default 30 until the real count is known),
   `LED_BRIGHTNESS` 100/255, GRB order.
 - Mirrors the effective mask (physical | web-simulated) locally, independent of the network:
   - idle (mask 0): dim warm glow `(8, 4, 0)`

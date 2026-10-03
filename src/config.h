@@ -17,9 +17,8 @@
 #endif
 
 // Buttons, indexed by mask bit (see Protocol.h). Wired to GND, INPUT_PULLUP.
-// Green is on GPIO 35, which is input-only with NO internal pull-up: it needs
-// an external 10k resistor from GPIO 35 to 3.3 V or it floats (phantom presses).
-constexpr uint8_t BUTTON_PINS[] = {15, 35, 4, 12, 14};
+// Avoid GPIO 34-39 for buttons: they have no internal pull-up.
+constexpr uint8_t BUTTON_PINS[] = {15, 32, 4, 12, 14};
 static_assert(sizeof(BUTTON_PINS) == BUTTON_COUNT, "one pin per button");
 constexpr uint32_t SAMPLE_INTERVAL_MS = 5;
 constexpr uint32_t DEBOUNCE_MS = 50;
