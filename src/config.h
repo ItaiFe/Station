@@ -17,7 +17,9 @@
 #endif
 
 // Buttons, indexed by mask bit (see Protocol.h). Wired to GND, INPUT_PULLUP.
-constexpr uint8_t BUTTON_PINS[] = {15, 2, 4, 12, 14};
+// Green is on GPIO 35, which is input-only with NO internal pull-up: it needs
+// an external 10k resistor from GPIO 35 to 3.3 V or it floats (phantom presses).
+constexpr uint8_t BUTTON_PINS[] = {15, 35, 4, 12, 14};
 static_assert(sizeof(BUTTON_PINS) == BUTTON_COUNT, "one pin per button");
 constexpr uint32_t SAMPLE_INTERVAL_MS = 5;
 constexpr uint32_t DEBOUNCE_MS = 50;
@@ -52,9 +54,9 @@ constexpr int ETH01_POWER_ENABLE_PIN = 5;
 constexpr uint32_t SIM_DEFAULT_MS = 1000;
 constexpr uint32_t SIM_MAX_MS = 10000;
 
-// LED strip (WS2812B, GRB) mirroring the pressed buttons. GPIO 33: the ESP32's
-// GPIO 34-39 are input-only and cannot drive a strip.
-constexpr uint8_t LED_PIN = 33;
+// LED strip (WS2812B, GRB) mirroring the pressed buttons. Must be an output-capable
+// pin (GPIO 34-39 are input-only).
+constexpr uint8_t LED_PIN = 2;
 constexpr uint16_t LED_COUNT = 30;  // set to the real strip length
 constexpr uint8_t LED_BRIGHTNESS = 100;
 constexpr uint32_t LED_FRAME_MS = 20;  // rainbow refresh interval
