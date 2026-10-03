@@ -4,6 +4,7 @@
 #include "Streamer.h"
 #include "config.h"
 #include "network.h"
+#include "ota.h"
 #include "stats.h"
 #include "web.h"
 
@@ -18,10 +19,12 @@ static bool servicesStarted = false;
 // Web (and OTA) need a live network; start them on the first connection.
 static void serviceLoop() {
     if (!servicesStarted && network_connected()) {
+        ota_begin();
         web_begin();
         servicesStarted = true;
     }
     if (servicesStarted) {
+        ota_handle();
         web_handle();
     }
 }
