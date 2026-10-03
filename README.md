@@ -13,6 +13,8 @@ pio test -e native                                      # host unit tests
 ```
 
 Each `stationN` env sets `-DSTATION_ID=N`; there is no config file to copy.
+The first flash of this firmware onto a board must be over USB: it uses the
+`min_spiffs.csv` partition table (1.9 MB app slots), which OTA cannot install.
 Build output goes to `~/.platformio/workspaces/station` (kept out of iCloud-synced
 `~/Documents`, which makes builds crawl).
 
