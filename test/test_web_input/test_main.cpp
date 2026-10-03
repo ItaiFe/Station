@@ -77,6 +77,16 @@ void test_sim_hold_wraparound() {
     TEST_ASSERT_EQUAL_HEX8(0x00, h.mask(0x00000024u));  // 100 ms later
 }
 
+// A finished hold must not come back when millis() wraps 2^32 ms later.
+void test_sim_hold_does_not_replay_after_wrap() {
+    SimHold h;
+    h.start(0x1F, 10000, 1000);
+    TEST_ASSERT_EQUAL_HEX8(0x1F, h.mask(5000));
+    TEST_ASSERT_EQUAL_HEX8(0x00, h.mask(11000));
+    TEST_ASSERT_EQUAL_HEX8(0x00, h.mask(1000));  // 1000 + 2^32 after wrapping
+    TEST_ASSERT_EQUAL_HEX8(0x00, h.mask(5000));
+}
+
 int main() {
     UNITY_BEGIN();
     RUN_TEST(test_parse_mask_accepts_hex_and_decimal);
@@ -87,5 +97,6 @@ int main() {
     RUN_TEST(test_sim_hold_lasts_duration);
     RUN_TEST(test_sim_hold_restart_replaces);
     RUN_TEST(test_sim_hold_wraparound);
+    RUN_TEST(test_sim_hold_does_not_replay_after_wrap);
     return UNITY_END();
 }

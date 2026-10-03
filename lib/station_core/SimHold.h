@@ -10,8 +10,11 @@ public:
         startMs_ = nowMs;
     }
 
-    uint8_t mask(uint32_t nowMs) const {
-        return nowMs - startMs_ < durationMs_ ? mask_ : 0;
+    // Call every loop: an expired hold is cleared so it cannot reappear when
+    // millis() wraps around 2^32 ms later.
+    uint8_t mask(uint32_t nowMs) {
+        if (mask_ != 0 && nowMs - startMs_ >= durationMs_) mask_ = 0;
+        return mask_;
     }
 
 private:
