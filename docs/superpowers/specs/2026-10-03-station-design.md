@@ -90,6 +90,19 @@ The effective mask sent = physical mask OR simulated mask (while a web hold is a
 - `pio run`: all station envs build.
 - Manual: `python3 tools/listen.py`, point station at it, press buttons.
 
+## LED strip (added 2026-10-03)
+
+- WS2812B strip, data on **GPIO 33** (GPIO 39 was requested but is input-only on the
+  ESP32). `LED_COUNT` in `config.h` (default 30 until the real count is known),
+  `LED_BRIGHTNESS` 100/255, GRB order.
+- Mirrors the effective mask (physical | web-simulated) locally, independent of the network:
+  - idle (mask 0): dim warm glow `(8, 4, 0)`
+  - 1..4 buttons: whole strip = average of pressed colors using the Flamingo's palette
+    (red 255,0,0; green 0,255,0; blue 0,0,255; yellow 180,180,0; white 191,191,191)
+  - all five (0x1F): moving rainbow while held
+- Color math lives in `lib/station_core/LedColor.*` (host-tested); FastLED driving in
+  `src/leds.*`, refreshed at most every 20 ms.
+
 ## Out of scope
 
 Changes to the Flamingo, new transports (ESP-NOW), more than 4 stations, HTTP JSON
