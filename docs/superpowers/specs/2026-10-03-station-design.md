@@ -97,8 +97,10 @@ The effective mask sent = physical mask OR simulated mask (while a web hold is a
   `LED_BRIGHTNESS` 100/255, GRB order.
 - Mirrors the effective mask (physical | web-simulated) locally, independent of the network:
   - idle (mask 0): dim warm glow `(8, 4, 0)`
-  - 1..4 buttons: whole strip = average of pressed colors using the Flamingo's palette
-    (red 255,0,0; green 0,255,0; blue 0,0,255; yellow 180,180,0; white 191,191,191)
+  - other masks: whole strip = the Flamingo's `getBlendedColorFromPackets()` blend:
+    average of pressed red 255,0,0 / green 0,255,0 / blue 0,0,255 / yellow 180,180,0;
+    white alone = 191,191,191; white with colors lightens the average to
+    70% color + 30% white (255)
   - all five (0x1F): moving rainbow while held
 - Color math lives in `lib/station_core/LedColor.*` (host-tested); FastLED driving in
   `src/leds.*`, refreshed at most every 20 ms.
