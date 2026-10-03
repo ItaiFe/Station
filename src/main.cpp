@@ -5,6 +5,7 @@
 #include "config.h"
 #include "network.h"
 #include "stats.h"
+#include "web.h"
 
 StationStats stats;
 
@@ -12,6 +13,18 @@ static Debouncer debouncer(DEBOUNCE_MS);
 static Streamer streamer(STREAM_INTERVAL_MS, RELEASE_REPEATS);
 static uint32_t lastSampleMs = 0;
 static uint8_t physicalMask = 0;
+static bool servicesStarted = false;
+
+// Web (and OTA) need a live network; start them on the first connection.
+static void serviceLoop() {
+    if (!servicesStarted && network_connected()) {
+        web_begin();
+        servicesStarted = true;
+    }
+    if (servicesStarted) {
+        web_handle();
+    }
+}
 
 static uint8_t readRawButtons() {
     uint8_t raw = 0;
@@ -55,13 +68,14 @@ void setup() {
 void loop() {
     const uint32_t now = millis();
     network_loop(now);
+    serviceLoop();
 
     if (now - lastSampleMs >= SAMPLE_INTERVAL_MS) {
         lastSampleMs = now;
         updatePhysical(debouncer.update(readRawButtons(), now));
     }
 
-    stats.currentMask = physicalMask;
+    stats.currentMask = physicalMask | web_simulated_mask(now);
     streamMask(now);
     delay(1);
 }
