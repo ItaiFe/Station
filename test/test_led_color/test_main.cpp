@@ -43,7 +43,7 @@ void test_rainbow_spreads_across_strip() {
 void test_rainbow_moves_and_wraps() {
     TEST_ASSERT_EQUAL_UINT8(1, rainbowHue(0, 30, 8));
     TEST_ASSERT_EQUAL_UINT8(0, rainbowHue(0, 30, 256 * 8));
-    TEST_ASSERT_EQUAL_UINT8(rainbowHue(0, 30, 0xFFFFFFFFu) + 0, rainbowHue(0, 30, 0xFFFFFFFFu));
+    TEST_ASSERT_EQUAL_UINT8(255, rainbowHue(0, 30, 0xFFFFFFFFu));  // last ms before millis() wraps
 }
 
 void test_rainbow_zero_count_is_safe() {

@@ -3,6 +3,7 @@
 #include "Protocol.h"
 #include "Streamer.h"
 #include "config.h"
+#include "leds.h"
 #include "network.h"
 #include "ota.h"
 #include "stats.h"
@@ -65,6 +66,7 @@ void setup() {
     Serial.begin(115200);
     Serial.printf("\n=== %s (id %d) firmware %s ===\n", STATION_NAME, STATION_ID, FIRMWARE_VERSION);
     for (uint8_t pin : BUTTON_PINS) pinMode(pin, INPUT_PULLUP);
+    leds_begin();
     network_begin();
 }
 
@@ -79,6 +81,7 @@ void loop() {
     }
 
     stats.currentMask = physicalMask | web_simulated_mask(now);
+    leds_update(stats.currentMask, now);
     streamMask(now);
     delay(1);
 }

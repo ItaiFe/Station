@@ -28,6 +28,13 @@ Build output goes to `~/.platformio/workspaces/station` (kept out of iCloud-sync
 
 Each button: GPIO ↔ GND, internal pull-up (pressed = LOW).
 
+LED strip (WS2812B): data → **GPIO 33**, plus 5 V and GND (share GND with the ESP32).
+GPIO 34–39 are input-only on the ESP32 and cannot drive a strip. Set the strip
+length in `LED_COUNT` (`src/config.h`, default 30).
+
+The strip mirrors the pressed buttons with the Flamingo's color blend, shows a
+moving rainbow while all five are held, and glows dimly when idle.
+
 ## Protocol
 
 UDP to `flamingo-esp32.local:5000`, 2 bytes: `[station_id, mask]`.

@@ -51,3 +51,10 @@ constexpr int ETH01_POWER_ENABLE_PIN = 5;
 // Web test page simulated hold
 constexpr uint32_t SIM_DEFAULT_MS = 1000;
 constexpr uint32_t SIM_MAX_MS = 10000;
+
+// LED strip (WS2812B, GRB) mirroring the pressed buttons. GPIO 33: the ESP32's
+// GPIO 34-39 are input-only and cannot drive a strip.
+constexpr uint8_t LED_PIN = 33;
+constexpr uint16_t LED_COUNT = 30;  // set to the real strip length
+constexpr uint8_t LED_BRIGHTNESS = 100;
+constexpr uint32_t LED_FRAME_MS = 20;  // rainbow refresh interval
